@@ -22,5 +22,6 @@
     "noFallthroughCasesInSwitch": false,
     "types": ["node", "jest"],
     "strictPropertyInitialization": false
-  }
+  },
+  "include": ["src/**/*", "prisma.config.ts"]
 }
