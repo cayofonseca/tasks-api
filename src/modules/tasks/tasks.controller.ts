@@ -9,7 +9,10 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
+import { ValidateResourcesId } from '../../common/decorators/validate-resources-id.decorator';
+import { ValidateResourcesIdInterceptor } from '../../common/interceptors/validate-resources-id.interceptor';
 import { TaskDto } from './tasks.dto';
 import { TasksService } from './tasks.service';
 
@@ -17,20 +20,24 @@ import { TasksService } from './tasks.service';
   version: '1',
   path: 'projects/:projectId/tasks',
 })
+@UseInterceptors(ValidateResourcesIdInterceptor)
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 
   @Get()
+  @ValidateResourcesId()
   findAllByProject(@Param('projectId', ParseUUIDPipe) projectId: string) {
     return this.taskService.findAllByProject(projectId);
   }
 
   @Post()
+  @ValidateResourcesId()
   create(@Param('projectId', ParseUUIDPipe) projectId: string, @Body() data: TaskDto) {
     return this.taskService.create(projectId, data);
   }
 
   @Get(':taskId')
+  @ValidateResourcesId()
   findOne(
     @Param('projectId', ParseUUIDPipe) projectId: string,
     @Param('taskId', ParseUUIDPipe) taskId: string
@@ -39,6 +46,7 @@ export class TasksController {
   }
 
   @Put(':taskId')
+  @ValidateResourcesId()
   update(
     @Param('projectId', ParseUUIDPipe) projectId: string,
     @Param('taskId', ParseUUIDPipe) taskId: string,

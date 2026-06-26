@@ -14,6 +14,20 @@ export class ProjectsService {
       where: {
         id,
       },
+      select: {
+        id: true,
+        name: true,
+        tasks: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            status: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
     });
   }
 
@@ -32,7 +46,12 @@ export class ProjectsService {
     });
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    await this.prismaService.task.deleteMany({
+      where: {
+        projectId: id,
+      },
+    });
     return this.prismaService.project.delete({
       where: {
         id,
