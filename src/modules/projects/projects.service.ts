@@ -31,9 +31,16 @@ export class ProjectsService {
     });
   }
 
-  create(data: ProjectRequestDto) {
+  create(userId: string, data: ProjectRequestDto) {
     return this.prismaService.project.create({
-      data,
+      data: {
+        ...data,
+        createdBy: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
     });
   }
 

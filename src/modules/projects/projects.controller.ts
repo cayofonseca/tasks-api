@@ -45,8 +45,8 @@ export class ProjectsController {
   @ApiResponse({
     type: ProjectListItemDto,
   })
-  create(@Body() data: ProjectRequestDto) {
-    return this.projectsService.create(data);
+  create(@Body() data: ProjectRequestDto, @Body('userId') userId: string) {
+    return this.projectsService.create(userId, data);
   }
 
   @Put(':projectId')

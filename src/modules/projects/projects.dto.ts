@@ -10,7 +10,7 @@ export class ProjectRequestDto {
 
   @IsString()
   @ApiProperty({ description: 'Project description', required: false })
-  description: string;
+  description?: string;
 }
 
 export class ProjectListItemDto {
