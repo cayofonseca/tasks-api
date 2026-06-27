@@ -55,6 +55,15 @@ export class UsersService {
   create(data: CreateUserDto) {
     return this.prisma.user.create({
       data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        avatar: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
 

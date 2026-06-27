@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CollaboratorRole } from '@prisma/client';
 import { PrismaService } from '../../prisma.service';
 import { ProjectRequestDto } from './projects.dto';
 
@@ -31,13 +32,24 @@ export class ProjectsService {
     });
   }
 
-  create(data: ProjectRequestDto) {
-    return this.prismaService.project.create({
+  async create(data: ProjectRequestDto) {
+    const project = await this.prismaService.project.create({
       data: {
         ...data,
-        createdById: '123',
+        createdById: 'd478d571-479a-447d-a76a-45f3c7c07124',
       },
     });
+
+    // add the user as owner to the created project
+    await this.prismaService.projectCollaborator.create({
+      data: {
+        projectId: project.id,
+        userId: 'd478d571-479a-447d-a76a-45f3c7c07124',
+        role: CollaboratorRole.OWNER,
+      },
+    });
+
+    return project;
   }
 
   update(id: string, data: ProjectRequestDto) {
