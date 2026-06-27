@@ -11,6 +11,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
+import { CreateUserDto, UpdateUserDto, UserFullDto, UserListItemDto } from './users.dto';
 import { UsersService } from './users.service';
 
 @Controller({
@@ -21,10 +23,12 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
+  @ApiResponse({ type: [UserListItemDto] })
   findAll() {
     return this.userService.findAll();
   }
 
+  @ApiResponse({ type: UserFullDto })
   @Get(':userId')
   async findOne(@Param('userId', ParseUUIDPipe) userId: string) {
     const user = await this.userService.findById(userId);
@@ -38,12 +42,12 @@ export class UsersController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() data: any) {
+  async create(@Body() data: CreateUserDto) {
     return this.userService.create(data);
   }
 
   @Put(':userId')
-  async update(@Param('userId', ParseUUIDPipe) userId: string, @Body() data: any) {
+  async update(@Param('userId', ParseUUIDPipe) userId: string, @Body() data: UpdateUserDto) {
     return this.userService.update(userId, data);
   }
 
