@@ -9,9 +9,11 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ValidateResourcesId } from '../../common/decorators/validate-resources-id.decorator';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { ValidateResourcesIdInterceptor } from '../../common/interceptors/validate-resources-id.interceptor';
 import { TaskDto } from './tasks.dto';
 import { TasksService } from './tasks.service';
@@ -21,6 +23,7 @@ import { TasksService } from './tasks.service';
   path: 'projects/:projectId/tasks',
 })
 @UseInterceptors(ValidateResourcesIdInterceptor)
+@UseGuards(JwtAuthGuard)
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 
