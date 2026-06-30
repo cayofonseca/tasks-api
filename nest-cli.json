@@ -6,10 +6,11 @@
     "deleteOutDir": true,
     "assets": [
       {
-        "include": "**/*.hbs",
+        "include": "modules/mail/template/**/*",
         "outDir": "dist/src"
       }
-    ]
+    ],
+    "watchAssets": true
   },
   "generateOptions": {
     "baseDir": "modules"
