@@ -15,6 +15,16 @@ async function bootstrap() {
     .setTitle('Tasks API')
     .setDescription('API desenvolvida durante o curso de NestJs do Monaro')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+      },
+      'jwt'
+    )
     .addTag('API')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

@@ -13,6 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -30,6 +31,7 @@ import { CommentsService } from './comments.service';
 })
 @UseInterceptors(ValidateResourcesIdInterceptor)
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth('jwt')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
