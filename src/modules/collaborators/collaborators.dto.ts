@@ -40,7 +40,7 @@ class CollaboratorUserDto {
   email: string;
 
   @ApiProperty({ nullable: true })
-  avatar: string;
+  avatar: string | null;
 }
 
 export class CollaboratorListItemDto {
@@ -57,7 +57,7 @@ export class CollaboratorListItemDto {
   userId: string;
 
   @ApiProperty({ format: 'date-time' })
-  createdAt: string;
+  createdAt: Date;
 
   @ApiProperty({ type: CollaboratorUserDto })
   user: CollaboratorUserDto;

@@ -47,13 +47,13 @@ export class UserListItemDto {
   @ApiProperty()
   email: string;
   @ApiProperty()
-  avatar: string;
+  avatar: string | null;
   @ApiProperty()
   role: Role;
   @ApiProperty()
-  createdAt: string;
+  createdAt: Date;
   @ApiProperty()
-  updateAt: string;
+  updatedAt: Date;
 }
 
 class UserProjectDto {

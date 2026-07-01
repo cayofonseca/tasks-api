@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { TaskPriority, TaskStatus } from '@prisma/client';
 import { IsDateString, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class TaskDto {
+export class TaskRequestDto {
   @ApiProperty({
     description: 'The title of the task',
   })
@@ -45,4 +45,54 @@ export class TaskDto {
   @IsOptional()
   @IsDateString()
   dueDate?: string;
+
+  @ApiProperty({ description: 'Assignee User Id', required: true })
+  @IsString()
+  @IsOptional()
+  assineeId?: string;
+}
+
+class TaskBaseDto {
+  @ApiProperty() id: string;
+  @ApiProperty() title: string;
+  @ApiProperty({ nullable: true, required: false }) description?: string | null;
+  @ApiProperty({ enum: TaskStatus }) status: TaskStatus;
+  @ApiProperty({ enum: TaskPriority }) priority: TaskPriority;
+  @ApiProperty({ nullable: true, required: false, format: 'date-time' }) dueDate?: Date | null;
+  @ApiProperty({ format: 'date-time' }) createdAt: Date;
+  @ApiProperty({ format: 'date-time' }) updatedAt: Date;
+}
+
+export class TaskAssigneeDto {
+  @ApiProperty() id: string;
+  @ApiProperty() name: string;
+  @ApiProperty() email: string;
+  @ApiProperty({ nullable: true, required: false }) avatar?: string | null;
+}
+
+export class TaskListItemDto extends TaskBaseDto {
+  @ApiProperty({ type: TaskAssigneeDto, nullable: true, required: false })
+  assignee?: TaskAssigneeDto | null;
+}
+
+export class TaskCommentUserDto {
+  @ApiProperty() id: string;
+  @ApiProperty() name: string;
+  @ApiProperty() email: string;
+  @ApiProperty({ nullable: true, required: false }) avatar?: string | null;
+}
+
+export class TaskCommentDto {
+  @ApiProperty() id: string;
+  @ApiProperty() content: string;
+  @ApiProperty({ format: 'date-time' }) createdAt: Date;
+  @ApiProperty({ type: TaskCommentUserDto }) user: TaskCommentUserDto;
+}
+
+export class TaskFullDto {
+  @ApiProperty({ type: TaskAssigneeDto, nullable: true, required: false })
+  assignee?: TaskAssigneeDto | null;
+
+  @ApiProperty({ type: [TaskCommentDto] })
+  comments: TaskCommentDto;
 }

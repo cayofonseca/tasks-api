@@ -16,7 +16,7 @@ class CommentAuthorDto {
   @ApiProperty()
   email: string;
   @ApiProperty({ nullable: true })
-  avatar: string;
+  avatar: string | null;
 }
 
 export class CommentListItemDto {
@@ -33,13 +33,13 @@ export class CommentListItemDto {
   authorId: string;
 
   @ApiProperty({ format: 'date-time' })
-  createdAt: string;
+  createdAt: Date;
 
   @ApiProperty({ format: 'date-time' })
-  updatedAt: string;
+  updatedAt: Date;
 
   @ApiProperty({ type: CommentAuthorDto })
-  author: CommentListItemDto;
+  author: CommentAuthorDto;
 }
 
 class CommentTaskDto {

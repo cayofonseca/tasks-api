@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -17,11 +18,12 @@ import {
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
-  ApiResponse,
 } from '@nestjs/swagger';
 import { ValidateResourcesId } from '../../common/decorators/validate-resources-id.decorator';
+import { QueryPaginationDto } from '../../common/dtos/query-pagination.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { ValidateResourcesIdInterceptor } from '../../common/interceptors/validate-resources-id.interceptor';
+import { ApiPaginatedResponse } from '../../common/swagger/api-paginated-response';
 import { CommentFullDto, CommentListItemDto, CommentRequestDto } from './comments.dto';
 import { CommentsService } from './comments.service';
 
@@ -37,9 +39,12 @@ export class CommentsController {
 
   @Get()
   @ValidateResourcesId()
-  @ApiResponse({ type: [CommentListItemDto], description: 'Get all comments by task' })
-  findAllByTask(@Param('taskId', ParseUUIDPipe) taskId: string) {
-    return this.commentsService.findAllByTask(taskId);
+  @ApiPaginatedResponse(CommentListItemDto)
+  findAllByTask(
+    @Param('taskId', ParseUUIDPipe) taskId: string,
+    @Query() query?: QueryPaginationDto
+  ) {
+    return this.commentsService.findAllByTask(taskId, query);
   }
 
   @Get(':commentId')
