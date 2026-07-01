@@ -9,13 +9,16 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { ValidateResourcesId } from '../../common/decorators/validate-resources-id.decorator';
+import { QueryPaginationDto } from '../../common/dtos/query-pagination.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { ValidateResourcesIdInterceptor } from '../../common/interceptors/validate-resources-id.interceptor';
+import { ApiPaginatedResponse } from '../../common/swagger/api-paginated-response';
 import { ProjectFullDto, ProjectListItemDto, ProjectRequestDto } from './projects.dto';
 import { ProjectsService } from './projects.service';
 
@@ -30,11 +33,9 @@ import { ProjectsService } from './projects.service';
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
   @Get()
-  @ApiResponse({
-    type: [ProjectListItemDto],
-  })
-  findAll() {
-    return this.projectsService.findAll();
+  @ApiPaginatedResponse(ProjectListItemDto)
+  findAll(@Query() query?: QueryPaginationDto) {
+    return this.projectsService.findAll(query);
   }
 
   @Get(':projectId')
